@@ -1,0 +1,108 @@
+---
+title: "Psych 504 Lab Assignment 1"
+author: "Ryan Dobson"
+date: 2025-01-23 #date of initial start (Y, M, D)
+format: 
+  html:
+      code-fold: true #allows the code to be collapsed
+      embed-resources: true #for html documents to save with formatting 
+      output-file: Dobson_Ryan_Lab1
+prefer-html: true
+knitr: 
+  opts_chunk: 
+    comment: "#>"
+    collapse: true
+execute:
+  cache: false #this saves each code chunk so you don't need to re-run it. If you have chunks that depend upon each other this can be dangerous though. Use "dependson"
+  #for example, if you reload in data, but don't reload the chunk that loads the data, your output will still be wrong
+  echo: true #do I want to display the code chunk? 
+  results: true #do I want to display the output? 
+  include: true #do I want to include the code and code output?
+  warning: false #do I want to display warnings from R about the analysis? 
+  eval: true #do I want to evaluate this chunk? 
+---
+
+```{r}
+#| label: loading_data
+#| echo: false #I don't want the code chunk to display in document here.
+
+#> To create a new code chunk: ctrl + alt + i 
+
+
+library(psych)
+library(tidyverse)
+library(codechest)
+library(kableExtra)
+
+df <- read.csv("data/eclsk.revised.csv", stringsAsFactors = FALSE)
+
+source("504_plot_theme.R")
+
+```
+
+### Question 1:
+
+Create a histogram for the age variable. Describe the distribution.
+
+```{r}
+p1 <- df |> ggplot(aes(x = age)) +
+  geom_histogram(
+    color = "red", #this is for outline 
+    fill = "lightblue"
+  ) +
+  labs(
+    x = "Participant Age",
+    y = "Count",
+    title = "Histogram of Age",
+    caption = ""
+  ) +
+  theme504()
+
+```
+
+![](plots/lab1_age_hist.png)
+
+### Question 2:
+
+Create box plots for the math variable by public. Given that public schools are coded as 1 and non-public schools are coded as 0. Which type of school performs better in terms of students’ math performance? Why? Use the boxes in the box plot to justify your answers.
+
+```{r}
+p2 <- df |> ggplot(aes(y = math, color = publicF)) +
+  geom_boxplot() +
+  labs(
+    y = "Math",
+    color = "" #changing color to blank removes the legend title -- comment this out to see what happens
+  )  +
+  theme(
+    axis.text.x = element_blank(), # Removes the x-axis tick labels -- not 
+    axis.ticks.x = element_blank() # Removes the tick marks
+  ) +
+  theme504() #apply custom theme
+
+```
+
+![](plots/lab1_school_boxplot.png)
+
+### Question 3:
+
+Calculate the mean, median, range, IQR, standard deviation, variance, skewness, and kurtosis for the income variable. Provide a brief summary of the statistics to describe the income variable (don’t forget the unit of the variable while interpreting the results).
+
+```{r}
+
+describe(df$income) #gives most things
+summary(df$income)  #for IQR 
+
+var(df$income)  #for variance 
+
+#Remember, variance is also the square root of the standard deviation 
+sqrt(var(df$income)) 
+
+```
+
+### Question 4
+
+Save graphs and tables from (1) and (2) (screenshot, export, or whatever means you prefer). And incorporate them into a Word document.
+
+### Question 5
+
+Incorporate your R syntax or SPSS syntax into the same Word document.
