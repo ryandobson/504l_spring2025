@@ -18,7 +18,7 @@ execute:
   echo: true #do I want to display the code chunk? 
   results: true #do I want to display the output? 
   include: true #do I want to include the code and code output?
-  warning: false #do I want to display warnings from R about the analysis? 
+  warning: false #do I want to display warnings from R about the analysis?
   eval: true #do I want to evaluate this chunk? 
 ---
 

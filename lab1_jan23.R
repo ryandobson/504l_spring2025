@@ -13,7 +13,7 @@ library(tidyverse)
 library(codechest) #my personal package
 #> If you want to download my package you'll need to use:
 #remotes::install_github("ryandobson/codechest")
-
+library(codechest)
 
 df <- read.csv("data/eclsk.revised.csv", stringsAsFactors = FALSE)
 
@@ -135,7 +135,6 @@ for (file in plot_files) {
 
 # Render quarto file as word doc -----
 library(quarto)
-
 
 quarto_render(input = "lab1_jan23.qmd", #qmd file name
               output_file = "Dobson_Ryan_Lab1.docx", #output file name
