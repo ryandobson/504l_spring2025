@@ -58,18 +58,16 @@ str(df$publicF)
 summary(df$publicF)
 summary(df$public) #this gives you the 5 number summary because the original variable is numeric (0 and 1)
 
-p2 <- df |> ggplot(aes(y = math, color = publicF)) +
+p2 <- df |> ggplot(aes(y = math, x = publicF, color = publicF)) +
   geom_boxplot() +
   labs(
     y = "Math",
+    x = "",
     color = "" #changing color to blank removes the legend title -- comment this out to see what happens
-  )  +
-  theme(
-    axis.text.x = element_blank(), # Removes the x-axis tick labels -- not 
-    axis.ticks.x = element_blank() # Removes the tick marks
-  ) +
+  )  + 
+ # scale_x_discrete(labels = c("Non public", "Public")) + #if you want to rename them, use this. Otherwise, its unnecessary. 
   theme504() #apply custom theme
-
+p2
 
 
 
