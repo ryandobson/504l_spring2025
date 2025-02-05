@@ -3,6 +3,8 @@
 #> clear environment 
 rm(list = ls())
 
+#> ctrl + l -- command + l 
+
 # load packages 
 library(tidyverse)
 library(psych)
@@ -10,6 +12,7 @@ source("504_plot_theme.R")
 
 # read in example data 
 df <- read.csv("data/distraction.csv")
+
 
 # get an idea of the data 
 str(df) 
@@ -69,7 +72,7 @@ df |> group_by(groupF) |>
     skew = psych::skew(score, na.rm = TRUE),
     kurtosis = psych::kurtosi(score, na.rm = TRUE)
    #if you want, keep adding in other statistics you want following the same format. e.g., min, max
-    )
+  )
 #> The downside of this is that you only get information for one variable. Of course, 
 #> you could just copy and paste all of the elements in summarize and then change the
 #> variable to something else. I don't recommend doing this, its tedious and will 
@@ -85,7 +88,7 @@ describe(df[sapply(df, is.numeric)]) # "sapply" is a more complicated function, 
 # to make your code more compact. You can save a lot of copying and pasting with it. 
 
 
-#> Generating more data so graphs are a bit more realistic -----
+#> Generating more data so graphs are a bit more realistic ----- 
 
 set.seed(123)  # For reproducibility
 
@@ -146,6 +149,8 @@ summary(aov(score ~ group_name, data = df))
 # It runs and gives the same exact output as the factor...
 summary(aov(score ~ group_nameF, data = df))
 
+str(df)
+
 #> So why do we Need to change things to factors? 
 
 #> Well, most typically, your categorical variables will probably be loaded in
@@ -168,6 +173,8 @@ summary(lm(score ~ groupF, data = df))
 # We now have an intercept and two effects: 
 #> What do they mean? 
 #> Look back at your descriptives! 
+
+df |> group_by(groupF) |> summarize(mean = mean(score))
 
 #> What hypothesis is the linear model testing compared to the aov model? 
 
@@ -389,12 +396,25 @@ df$binarygroup <- rep(c(1, 2), 6) #repeats "1" "2" 6 times
 df$binarygroup #look at the variable 
 df$binarygroup <- as.factor(df$binarygroup)
 
+
+library(emmeans)
+library(codechest)
+
 plot_mean_dif(df, score, binarygroup)
 
 # This function is really really nice for looking at simple group
 # differences.  
 
+df1$binarygroup <- rep(c(1, 2), 300) #repeats "1" "2" 6 times 
 
+df1$binarygroup <- factor(df1$binarygroup, levels = c(1, 2), labels = c("men", "women"))
+
+attr(df1$binarygroup, "label") <- "Participant scores on variable X"
+
+str(df1$binarygroup)
+
+plot_mean_dif(df1, score, binarygroup) + 
+  scale_y_continuous(breaks = seq(6, 16, by = 1))
 
 
 
