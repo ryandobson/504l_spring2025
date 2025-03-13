@@ -10,25 +10,27 @@ library(DescTools) #contrasts
 
 source("504_plot_theme.R")
 
-df <- read.csv("data/friendship.csv") |> 
-  select(matches("jealous|pid|Age.Part|Relationship.Status|Gender")) |> 
-  rename_with(tolower) |> #tidyverse version of renaming all variables with lowercase 
-  rename(
-    rel_status = use.relationship.status.participant #renaming a specific variable
-  ) |> 
-  dplyr::mutate(
-    pid = 1:158,
-    pid = factor(pid)
-  )
+df <- read.csv("friendship_within.csv")
+
+# df <- read.csv("data/friendship.csv") |> 
+#   dplyr::select(matches("jealous|pid|Age.Part|Relationship.Status|Gender")) |> 
+#   rename_with(tolower) |> #tidyverse version of renaming all variables with lowercase 
+#   rename(
+#     rel_status = use.relationship.status.participant #renaming a specific variable
+#   ) |> 
+#   dplyr::mutate(
+#     pid = 1:158,
+#     pid = factor(pid)
+#   )
 df[, grepl("jealous", names(df))] <- lapply(df[, grepl("jealous", names(df))], as.numeric)
 df[, grepl("jealous", names(df))]
 
 
-df <- df |> filter(!is.na(rom.jealous) & !is.na(ssf.jealous) & !is.na(osf.jealous)) |> as_tibble()
+#df <- df |> filter(!is.na(rom.jealous) & !is.na(ssf.jealous) & !is.na(osf.jealous)) |> as_tibble()
 
 str(df)
 
-write.csv("df", "friendship_within") #load in this dataset
+#write.csv(df, "friendship_within.csv") 
 
 #> Wide versus Long Format Data: 
 #> Long = 1 observation (e.g., dependent variable score) per line 
@@ -93,7 +95,10 @@ m1
 ezStats(data=dfl, dv=.(score), wid = .(pid), within= .(interloper))
 
 #plot marginal means
-ezPlot(data=dfl, dv=.(score), wid = .(pid), within= .(interloper), x=interloper)
+ezPlot(data=dfl, dv=.(score), wid = .(pid), within= .(interloper), x=interloper) +
+  labs(
+    title = "TEst"
+  )
 
 #posthoc test
 pairwise.t.test(dfl$score, dfl$interloper, paired = TRUE, p.adjust.method = "bonferroni")
